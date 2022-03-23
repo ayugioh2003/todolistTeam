@@ -1,22 +1,16 @@
 import http from "http";
 import { v4 as uuidv4 } from "uuid";
 import { todos } from "./model/todoModel.js";
-import { errorHandle } from "./errorHandle.js";
+import { errorHandle, successHandle } from "./utils/requestHandler.js";
+import { errorMsg } from "./utils/errorMsg.js";
 
 const requestListener = (req, res) => {
-  const headers = {
-    "Access-Control-Allow-Headers":
-      "Content-Type, Authorization, Content-Length, X-Requested-With",
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "PATCH, POST, GET,OPTIONS,DELETE",
-    "Content-Type": "application/json",
-  };
+  const error = msg => errorHandle(res, 400, msg);
+  const success = () => successHandle(res, JSON.stringify(todos));
 
   if (req.url == "/todos" && req.method == "GET") {
     // getTodo.js
-    res.writeHead(200, headers);
-    res.write(JSON.stringify(todos));
-    res.end();
+    success();
   } else if (req.url == "/todos" && req.method == "POST") {
     // postTodo.js
     let body = "";
@@ -25,15 +19,13 @@ const requestListener = (req, res) => {
       try {
         const data = JSON.parse(body);
         if (!data.title || !data.content) {
-          errorHandle(res);
+          error(errorMsg.POST);
           return;
         }
-        todos.push({ ...data, id: uuidv4() });
-        res.writeHead(200, headers);
-        res.write(JSON.stringify(todos));
-        res.end();
+        todos.push({ id: uuidv4(), ...data });
+        success();
       } catch {
-        errorHandle(res);
+        error(errorMsg.POST);
       }
     });
   } else if (req.url == "/todos" && req.method == "DELETE") {
@@ -43,17 +35,9 @@ const requestListener = (req, res) => {
   } else if (req.url.startsWith("/todos/") && req.method == "PATCH") {
     // patchTodo.js
   } else if (req.method == "OPTIONS") {
-    res.writeHead(200, headers);
-    res.end();
+    successHandle(res)
   } else {
-    res.writeHead(404, headers);
-    res.write(
-      JSON.stringify({
-        status: "false",
-        message: "無此網站路由",
-      })
-    );
-    res.end();
+    errorHandle(res, 404, errorMsg.NOTFOUND);
   }
 };
 
