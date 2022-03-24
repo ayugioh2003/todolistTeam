@@ -37,7 +37,7 @@ const requestListener = (req, res) => {
   } else if (req.method == "OPTIONS") {
     successHandle(res)
   } else {
-    errorHandle(res, 404, errorMsg.NOTFOUND);
+    errorHandle(res, 404, errorMsg.NOT_FOUND);
   }
 };
 
