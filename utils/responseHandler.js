@@ -1,4 +1,4 @@
-const request = (res, status, content) => {
+const response = (res, status, content) => {
   // CORS Header
   res.writeHead(status, {
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, Content-Length, X-Requested-With',
@@ -12,12 +12,12 @@ const request = (res, status, content) => {
 }
 
 export function errorHandle(res, status = 400, msg = "請求錯誤，請洽維修人員") {
-  request(res, status, JSON.stringify({
+  response(res, status, JSON.stringify({
     status: "false",
     message: msg,
   }))
 }
 
 export function successHandle(res, content) {
-  request(res, 200, content)
+  response(res, 200, content)
 }

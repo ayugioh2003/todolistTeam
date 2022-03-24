@@ -1,7 +1,7 @@
 import http from "http";
 import { v4 as uuidv4 } from "uuid";
 import { todos } from "./model/todoModel.js";
-import { errorHandle, successHandle } from "./utils/requestHandler.js";
+import { errorHandle, successHandle } from "./utils/responseHandler.js";
 import { errorMsg } from "./utils/errorMsg.js";
 
 const requestListener = (req, res) => {
