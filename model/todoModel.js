@@ -11,8 +11,17 @@ export function findMany() {
   return todos;
 }
 
-// 新增多筆資料到資料庫
-export function insertMany(data_from_controller) {
-  todos.push({ id: uuidv4(), ...data_from_controller });
+// 新增單筆資料到資料庫
+export function insertOne(dataFromController) {
+  todos.push({ id: uuidv4(), ...dataFromController });
   return todos;
 }
+
+// 更新單筆資料到資料庫
+export function updateOne() {}
+
+// 刪除單筆資料
+export function deleteOne() {}
+
+// 刪除多筆資料
+export function deleteMany() {}
