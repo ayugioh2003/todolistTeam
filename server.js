@@ -25,7 +25,7 @@ const requestListener = (req, res) => {
   } else if (req.method == 'OPTIONS') {
     successHandle(res);
   } else {
-    errorHandle(res, 404, errorMsg.NOT_FOUND);
+    errorHandle(res, errorMsg.NOT_FOUND, 404);
   }
 };
 
