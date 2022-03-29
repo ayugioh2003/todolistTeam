@@ -1,3 +1,5 @@
+import { errorMsg } from './errorMsg.js';
+
 const response = (res, status, content) => {
   // CORS Header
   res.writeHead(status, {
@@ -11,13 +13,16 @@ const response = (res, status, content) => {
   res.end();
 }
 
-export function errorHandle(res, status = 400, msg = "請求錯誤，請洽維修人員") {
+export function errorHandle(res, msg = errorMsg.DEFAULT, status = 400) {
   response(res, status, JSON.stringify({
     status: "false",
     message: msg,
   }))
 }
 
-export function successHandle(res, content) {
-  response(res, 200, content)
+export function successHandle(res, data) {
+  response(res, 200, JSON.stringify({
+    status: "success",
+    data
+  }))
 }
