@@ -1,7 +1,7 @@
 import http from 'http';
 import { errorHandle, successHandle } from './utils/responseHandler.js';
 import { errorMsg } from './utils/errorMsg.js';
-import { getTodos,postTodos } from './controller/todosController.js';
+import { getTodos,postTodos,deleteTodos } from './controller/todosController.js';
 
 const requestListener = (req, res) => {
 
@@ -17,7 +17,8 @@ const requestListener = (req, res) => {
       postTodos(res,body);
     });
   } else if (req.url == '/todos' && req.method == 'DELETE') {
-    // deleteTodo.js
+    // 透過呼叫controller的deleteTodos函式取得回應
+    deleteTodos(res);
   } else if (req.url.startsWith('/todos/') && req.method == 'DELETE') {
     // deleteTodo.js
   } else if (req.url.startsWith('/todos/') && req.method == 'PATCH') {
@@ -30,4 +31,4 @@ const requestListener = (req, res) => {
 };
 
 const server = http.createServer(requestListener);
-server.listen(process.env.PORT || 3005);
+server.listen(process.env.PORT || 3000);

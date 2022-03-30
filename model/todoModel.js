@@ -24,4 +24,7 @@ export function updateOne() {}
 export function deleteOne() {}
 
 // 刪除多筆資料
-export function deleteMany() {}
+export function deleteMany() {
+  todos.length = 0;
+  return todos;
+}
