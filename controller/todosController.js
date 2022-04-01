@@ -26,3 +26,14 @@ export const deleteTodos = (res) => {
   const result = deleteMany();
   successHandle(res,result);
 }
+// 呼叫model裡面的deleteOne函式刪除單筆資料
+export const deleteTodo = (res, nowID) => {
+  const deleteIndex = findMany().findIndex(ele => nowID === ele.id);
+  if(deleteIndex !== -1) {
+    const result = deleteOne(deleteIndex);
+    successHandle(res,result);
+  }
+  else {
+    errorHandle(res,errorMsg.DELETE);
+  }
+}
