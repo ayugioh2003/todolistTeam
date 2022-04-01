@@ -21,3 +21,8 @@ export const postTodos = (res,chunkData) => {
         errorHandle(res,errorMsg.POST);
     }
 };
+// 呼叫model裡面的deleteMany函式刪除多筆資料
+export const deleteTodos = (res) => {
+  const result = deleteMany();
+  successHandle(res,result);
+}
