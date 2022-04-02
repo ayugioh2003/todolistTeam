@@ -1,27 +1,32 @@
 import http from 'http';
 import { errorHandle, successHandle } from './utils/responseHandler.js';
 import { errorMsg } from './utils/errorMsg.js';
-import { getTodos,postTodos } from './controller/todosController.js';
+import { getTodos,postTodos,deleteTodos,patchTodos} from './controller/todosController.js';
 
 const requestListener = (req, res) => {
-
+  let body = '';
+  req.on('data', (chunk) => (body += chunk));
   if (req.url == '/todos' && req.method == 'GET') {
     // 透過呼叫controller的getTodos函式取得回應
     getTodos(res);
 
   } else if (req.url == '/todos' && req.method == 'POST') {
-    let body = '';
-    req.on('data', (chunk) => (body += chunk));
+
     req.on('end', () => {
       // 透過呼叫controller的postTodos函式新增資料
       postTodos(res,body);
     });
   } else if (req.url == '/todos' && req.method == 'DELETE') {
-    // deleteTodo.js
+    // 透過呼叫controller的deleteTodos函式取得回應
+    deleteTodos(res);
   } else if (req.url.startsWith('/todos/') && req.method == 'DELETE') {
     // deleteTodo.js
   } else if (req.url.startsWith('/todos/') && req.method == 'PATCH') {
-    // patchTodo.js
+    // 透過呼叫controller的patchTodos函式取得回應
+    req.on('end', () => {
+    const updateID = req.url.split('/').pop();
+    patchTodos(res, body, updateID);
+    });
   } else if (req.method == 'OPTIONS') {
     successHandle(res);
   } else {
@@ -30,4 +35,4 @@ const requestListener = (req, res) => {
 };
 
 const server = http.createServer(requestListener);
-server.listen(process.env.PORT || 3005);
+server.listen(process.env.PORT || 8080);
