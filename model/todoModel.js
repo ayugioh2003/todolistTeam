@@ -21,7 +21,10 @@ export function insertOne(dataFromController) {
 export function updateOne() {}
 
 // 刪除單筆資料
-export function deleteOne() {}
+export function deleteOne(deleteIndex) {
+  todos.splice(deleteIndex, 1);
+  return todos;
+}
 
 // 刪除多筆資料
 export function deleteMany() {
