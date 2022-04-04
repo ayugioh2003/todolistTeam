@@ -42,3 +42,15 @@ export const patchTodos = (res, chunkData, updateID) => {
     errorHandle(res, errorMsg.PATCH)
   }
 }
+
+// 呼叫model裡面的deleteOne函式刪除單筆資料
+export const deleteTodo = (res, nowID) => {
+  const deleteIndex = findMany().findIndex(ele => nowID === ele.id);
+  if(deleteIndex !== -1) {
+    const result = deleteOne(deleteIndex);
+    successHandle(res,result);
+  }
+  else {
+    errorHandle(res,errorMsg.DELETE);
+  }
+}
