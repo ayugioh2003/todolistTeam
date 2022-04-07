@@ -26,6 +26,23 @@ export const deleteTodos = (res) => {
   const result = deleteMany();
   successHandle(res,result);
 }
+
+// 呼叫model裡面的updateOne函式更新單筆資料
+export const patchTodos = (res, chunkData, updateID) => {
+  try{
+      const data = JSON.parse(chunkData);
+      const updateIndex = findMany().findIndex(ele => updateID == ele.id);
+    if(data.title !== undefined && data.content !== undefined && updateIndex !== -1){
+      const updateResult = updateOne(data, updateIndex);
+      successHandle(res, updateResult);
+    } else {
+      errorHandle(res, errorMsg.PATCH)
+    }
+  }catch{
+    errorHandle(res, errorMsg.PATCH)
+  }
+}
+
 // 呼叫model裡面的deleteOne函式刪除單筆資料
 export const deleteTodo = (res, nowID) => {
   const deleteIndex = findMany().findIndex(ele => nowID === ele.id);

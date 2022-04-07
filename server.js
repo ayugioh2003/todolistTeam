@@ -1,17 +1,17 @@
 import http from 'http';
 import { errorHandle, successHandle } from './utils/responseHandler.js';
 import { errorMsg } from './utils/errorMsg.js';
-import { getTodos,postTodos,deleteTodos,deleteTodo } from './controller/todosController.js';
+import { getTodos,postTodos,deleteTodos,deleteTodo,patchTodos } from './controller/todosController.js';
 
 const requestListener = (req, res) => {
-
+  let body = '';
+  req.on('data', (chunk) => (body += chunk));
   if (req.url == '/todos' && req.method == 'GET') {
     // 透過呼叫controller的getTodos函式取得回應
     getTodos(res);
 
   } else if (req.url == '/todos' && req.method == 'POST') {
-    let body = '';
-    req.on('data', (chunk) => (body += chunk));
+
     req.on('end', () => {
       // 透過呼叫controller的postTodos函式新增資料
       postTodos(res,body);
@@ -24,7 +24,11 @@ const requestListener = (req, res) => {
     const nowID = req.url.split('/').pop();
     deleteTodo(res, nowID);
   } else if (req.url.startsWith('/todos/') && req.method == 'PATCH') {
-    // patchTodo.js
+    // 透過呼叫controller的patchTodos函式取得回應
+    req.on('end', () => {
+    const updateID = req.url.split('/').pop();
+    patchTodos(res, body, updateID);
+    });
   } else if (req.method == 'OPTIONS') {
     successHandle(res);
   } else {

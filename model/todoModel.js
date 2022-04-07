@@ -18,7 +18,11 @@ export function insertOne(dataFromController) {
 }
 
 // 更新單筆資料到資料庫
-export function updateOne() {}
+export function updateOne(data, updateIndex) {
+  todos[updateIndex].title= data.title;
+  todos[updateIndex].content = data.content;
+  return todos;
+}
 
 // 刪除單筆資料
 export function deleteOne(deleteIndex) {
