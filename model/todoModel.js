@@ -19,8 +19,14 @@ export function insertOne(dataFromController) {
 
 // 更新單筆資料到資料庫
 export function updateOne(data, updateIndex) {
-  todos[updateIndex].title= data.title;
-  todos[updateIndex].content = data.content;
+  if(data.title !== undefined && data.content !== undefined){
+    todos[updateIndex].title= data.title;
+    todos[updateIndex].content = data.content;
+  }else if( data.title !== undefined){
+    todos[updateIndex].title= data.title;
+  }else{
+    todos[updateIndex].content = data.content;
+  }
   return todos;
 }
 
