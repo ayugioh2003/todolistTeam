@@ -32,7 +32,7 @@ export const patchTodos = (res, chunkData, updateID) => {
   try{
       const data = JSON.parse(chunkData);
       const updateIndex = findMany().findIndex(ele => updateID == ele.id);
-    if(data.title !== undefined && data.content !== undefined && updateIndex !== -1){
+    if(data.title !== undefined || data.content !== undefined && updateIndex !== -1){
       const updateResult = updateOne(data, updateIndex);
       successHandle(res, updateResult);
     } else {
