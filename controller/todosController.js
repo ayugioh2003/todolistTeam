@@ -2,16 +2,28 @@ import { errorHandle, successHandle } from '../utils/responseHandler.js';
 import { errorMsg } from '../utils/errorMsg.js';
 import { findMany, insertOne, updateOne, deleteOne, deleteMany } from '../model/todoModel.js';
 
+const bufferHandle = async (req) => {
+  let buffers = [];
+  for await (const buffer of req) {
+    buffers.push(buffer);
+  }
+  const data = await JSON.parse(Buffer.concat(buffers).toString());
+  return data;
+}
+
 // 呼叫model裡面的findMany函式取得資料陣列
 export const getTodos = (res) => {
   const result = findMany();
   successHandle(res, result);
 };
+
 // 呼叫model裡面的insertOne函式新增資料陣列
-export const postTodos = (res, chunkData) => {
+export const postTodos = async (req, res) => {
   try {
-    const data = JSON.parse(chunkData);
-    if (!data.title || !data.content) {
+    const data = await bufferHandle(req);
+    const { content, title } = data;
+
+    if (!title || !content) {
       errorHandle(res, errorMsg.POST);
       return;
     }
@@ -29,11 +41,13 @@ export const deleteTodos = (res) => {
 }
 
 // 呼叫model裡面的updateOne函式更新單筆資料
-export const patchTodos = (res, chunkData, updateID) => {
+export const patchTodos = async (req, res, updateID) => {
   try {
-    const data = JSON.parse(chunkData);
+    const data = await bufferHandle(req);
+    const { title, content } = data;
     const updateIndex = findMany().findIndex(ele => updateID == ele.id);
-    if ((data.title !== undefined || data.content !== undefined) && updateIndex !== -1) {
+
+    if ((title !== undefined || content !== undefined) && updateIndex !== -1) {
       const updateResult = updateOne(data, updateIndex);
       successHandle(res, updateResult);
     } else {
