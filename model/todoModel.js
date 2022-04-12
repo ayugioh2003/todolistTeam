@@ -34,10 +34,6 @@ export async function modelOperator(methodType, reqData) {
     const result = await getDB(Todolist);
     return result;
   }
-  // 測試用 可以新增 沒寫完整 等待刪除讓組員補齊
-  else if (methodType === 'POST') {
-    await postDB(Todolist, modelData);
-  }
 }
 
 // 新增單筆資料到資料庫

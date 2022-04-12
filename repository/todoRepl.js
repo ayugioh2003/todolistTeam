@@ -31,20 +31,3 @@ export async function getDB(model) {
   return result;
 }
 
-// 測試用新增 get功能確定沒問題就可以刪除
-// modelData 是根據schema定義出的 物件 資料格式
-export async function postDB(schemaModel, modelData) {
-  // 等待資料庫連線
-  await DBConnect();
-  const newTodolist = new schemaModel(modelData);
-
-  return await newTodolist
-    .save()
-    .then(() => {
-      console.log('create success');
-    })
-    .catch((err) => {
-      console.log('資料寫入錯誤');
-      console.log(err);
-    });
-}
