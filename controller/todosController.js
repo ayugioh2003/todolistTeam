@@ -12,8 +12,8 @@ const bufferHandle = async (req) => {
 }
 
 // 呼叫model裡面的findMany函式取得資料陣列
-export const getTodos = (res) => {
-  const result = findMany();
+export const getTodos =async (res) => {
+  const result =await findMany();
   successHandle(res, result);
 };
 
