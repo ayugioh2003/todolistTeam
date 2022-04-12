@@ -20,16 +20,7 @@ const bufferHandle = async (req) => {
 
 // 呼叫model裡面的findMany函式取得資料陣列
 export const getTodos = async (res) => {
-  // 假資料 req接收到的資料 bufferHandle成功才會把資料傳給model.js的方法
-  // 這邊只負責處理接收到的req處理  處理完傳給model.js裡面的方法做二次處理(加上id createAt這類不是使用者填的東西)
-  // 實際上get應該不會使用到req的資料
-  // 確認沒問題會刪除給post的組員做
-  const reqData = { title: 'reqData', content: 'req物件的內容2' };
-
-  // 直接呼叫操作mongoose.model的方法
-  // 先寫死 沒問題再改成用method傳進來
   const result = await modelOperator('GET',reqData);
-  // const result = await findMany(reqData);
   successHandle(res, result);
 };
 

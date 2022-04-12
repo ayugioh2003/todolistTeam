@@ -23,34 +23,21 @@ const todoSchema = () => {
 };
 
 // 使用 mongoose 的 model方法 找到 db 的 collection 並套用 schema 資料結構
-// 資料庫查詢的時候需要用到
 const Todolist = mongoose.model('todolist', todoSchema());
 
-// 讓controller把處理完的req資料傳進來二次處理  加上schema裡面的createAt之類的不是使用者填的資料
-// methodType 看是要對資料庫做什麼查詢 可以用req.method取代
-export async function modelOperator(methodType,reqData) {
+export async function modelOperator(methodType, reqData) {
   const modelData = {
-    title:reqData.title,
-    content:reqData.content,
+    title: reqData.title,
+    content: reqData.content,
   };
-  if(methodType === 'GET'){
+  if (methodType === 'GET') {
     const result = await getDB(Todolist);
     return result;
   }
   // 測試用 可以新增 沒寫完整 等待刪除讓組員補齊
-  else if(methodType === 'POST'){
-    await postDB(Todolist,modelData);
+  else if (methodType === 'POST') {
+    await postDB(Todolist, modelData);
   }
-}
-
-// 找到資料庫全部資料
-// 目前沒作用  其他沒用到這個就可以刪掉了
-export async function findMany(reqData) {
-
-  modelOperator('post',reqData);
-  // 把model當參數傳給連接資料庫的部份去搜尋
-  const result = await getDB(Todolist);
-  return result;
 }
 
 // 新增單筆資料到資料庫
