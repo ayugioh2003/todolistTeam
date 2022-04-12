@@ -1,18 +1,19 @@
 import mongoose from 'mongoose';
 // 環境變數套件
+// import dotenv from 'dotenv';
 import dotenv from 'dotenv';
+// 解決找不到環境變數  先找出目前檔案的位置
+const currentPath = process.cwd();
 // 讓套件找到自定義的環境變數
-dotenv.config({ path: '../config.env' });
-
-const dbString = process.env.DB_CONNECT_STRING;
-
+dotenv.config({ path: currentPath + '/config.env' });
+const DBString = process.env.DATABASE.replace(
+  '<password>',
+  process.env.DATABASE_PASSWORD
+);
 // 連線資料庫函式
 function DBConnect() {
   const DB = mongoose
-    .connect(
-    //   '這裡放雲端DB的連線字串'
-    // 或放環境變數 dbString
-    )
+    .connect(DBString)
     .then(() => {
       console.log('db connected');
     })
@@ -31,14 +32,11 @@ export async function getDB(model) {
 }
 
 // 測試用新增 get功能確定沒問題就可以刪除
-export async function postDB(model) {
-
+// modelData 是根據schema定義出的 物件 資料格式
+export async function postDB(schemaModel, modelData) {
   // 等待資料庫連線
   await DBConnect();
-  const newTodolist = new model({
-    title: '第四個項目',
-    content: '第一個內容',
-  });
+  const newTodolist = new schemaModel(modelData);
 
   return await newTodolist
     .save()
@@ -46,6 +44,7 @@ export async function postDB(model) {
       console.log('create success');
     })
     .catch((err) => {
+      console.log('資料寫入錯誤');
       console.log(err);
     });
 }
