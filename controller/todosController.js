@@ -1,6 +1,13 @@
 import { errorHandle, successHandle } from '../utils/responseHandler.js';
 import { errorMsg } from '../utils/errorMsg.js';
-import { findMany, insertOne, updateOne, deleteOne, deleteMany } from '../model/todoModel.js';
+import {
+  modelOperator,
+  findMany,
+  insertOne,
+  updateOne,
+  deleteOne,
+  deleteMany,
+} from '../model/todoModel.js';
 
 const bufferHandle = async (req) => {
   let buffers = [];
@@ -9,11 +16,20 @@ const bufferHandle = async (req) => {
   }
   const data = await JSON.parse(Buffer.concat(buffers).toString());
   return data;
-}
+};
 
 // 呼叫model裡面的findMany函式取得資料陣列
-export const getTodos = (res) => {
-  const result = findMany();
+export const getTodos = async (res) => {
+  // 假資料 req接收到的資料 bufferHandle成功才會把資料傳給model.js的方法
+  // 這邊只負責處理接收到的req處理  處理完傳給model.js裡面的方法做二次處理(加上id createAt這類不是使用者填的東西)
+  // 實際上get應該不會使用到req的資料
+  // 確認沒問題會刪除給post的組員做
+  const reqData = { title: 'reqData', content: 'req物件的內容2' };
+
+  // 直接呼叫操作mongoose.model的方法
+  // 先寫死 沒問題再改成用method傳進來
+  const result = await modelOperator('GET',reqData);
+  // const result = await findMany(reqData);
   successHandle(res, result);
 };
 
@@ -38,34 +54,33 @@ export const postTodos = async (req, res) => {
 export const deleteTodos = (res) => {
   const result = deleteMany();
   successHandle(res, result);
-}
+};
 
 // 呼叫model裡面的updateOne函式更新單筆資料
 export const patchTodos = async (req, res, updateID) => {
   try {
     const data = await bufferHandle(req);
     const { title, content } = data;
-    const updateIndex = findMany().findIndex(ele => updateID == ele.id);
+    const updateIndex = findMany().findIndex((ele) => updateID == ele.id);
 
     if ((title !== undefined || content !== undefined) && updateIndex !== -1) {
       const updateResult = updateOne(data, updateIndex);
       successHandle(res, updateResult);
     } else {
-      errorHandle(res, errorMsg.PATCH)
+      errorHandle(res, errorMsg.PATCH);
     }
   } catch {
-    errorHandle(res, errorMsg.PATCH)
+    errorHandle(res, errorMsg.PATCH);
   }
-}
+};
 
 // 呼叫model裡面的deleteOne函式刪除單筆資料
 export const deleteTodo = (res, nowID) => {
-  const deleteIndex = findMany().findIndex(ele => nowID === ele.id);
+  const deleteIndex = findMany().findIndex((ele) => nowID === ele.id);
   if (deleteIndex !== -1) {
     const result = deleteOne(deleteIndex);
     successHandle(res, result);
-  }
-  else {
+  } else {
     errorHandle(res, errorMsg.DELETE);
   }
-}
+};
