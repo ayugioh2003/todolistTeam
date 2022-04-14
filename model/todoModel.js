@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import mongoose from 'mongoose';
-import { getDB, postDB } from '../repository/todoRepl.js';
+import { getDB, postDB, deleteOneDB } from '../repository/todoRepl.js';
 
 export const todos = [
   { id: uuidv4(), title: 'test data 1', content: 'mock test data' },
@@ -41,6 +41,9 @@ export async function modelOperator(methodType,reqData) {
   else if(methodType === 'POST'){
     await postDB(Todolist,modelData);
   }
+  else if (methodType === 'DELETE_ONE') {
+   return await deleteOneDB(Todolist, reqData);
+  }
 }
 
 // 找到資料庫全部資料
@@ -69,12 +72,6 @@ export function updateOne(data, updateIndex) {
   } else {
     todos[updateIndex].content = data.content;
   }
-  return todos;
-}
-
-// 刪除單筆資料
-export function deleteOne(deleteIndex) {
-  todos.splice(deleteIndex, 1);
   return todos;
 }
 
