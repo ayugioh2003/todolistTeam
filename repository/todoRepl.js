@@ -48,3 +48,10 @@ export async function postDB(schemaModel, modelData) {
       console.log(err);
     });
 }
+
+export async function deleteOneDB(schemaModel, deleteId) {
+  await DBConnect();
+   await schemaModel.findByIdAndDelete(deleteId)
+    .then(() => console.log("單筆刪除成功")); // catch 交給外層的 errorHandle 處理
+  return await schemaModel.find();
+}

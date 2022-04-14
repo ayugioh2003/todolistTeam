@@ -5,7 +5,6 @@ import {
   findMany,
   insertOne,
   updateOne,
-  deleteOne,
   deleteMany,
 } from '../model/todoModel.js';
 
@@ -75,12 +74,11 @@ export const patchTodos = async (req, res, updateID) => {
 };
 
 // 呼叫model裡面的deleteOne函式刪除單筆資料
-export const deleteTodo = (res, nowID) => {
-  const deleteIndex = findMany().findIndex((ele) => nowID === ele.id);
-  if (deleteIndex !== -1) {
-    const result = deleteOne(deleteIndex);
+export const deleteTodo = async (res, nowID) => {
+  try {
+    const result = await modelOperator('DELETE_ONE', nowID);
     successHandle(res, result);
-  } else {
+  } catch (error) {
     errorHandle(res, errorMsg.DELETE);
   }
 };
