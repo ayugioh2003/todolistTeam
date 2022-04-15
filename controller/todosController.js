@@ -51,13 +51,9 @@ export const postTodos = async (req, res) => {
 // 呼叫model裡面的deleteMany函式刪除多筆資料
 export const deleteTodos = async (res) => {
   try {
-    const reqData = await findMany(res);
-    if(reqData.length === 0){
-      errorHandle(res, errorMsg.DELETES);
-      return;
-    }
-      const result = await modelOperator('DELETE_MANY',reqData);
-      successHandle(res, result);
+    const reqData = []
+    const result = await modelOperator('DELETE_MANY',reqData);
+    successHandle(res, result);
   } catch {
     errorHandle(res, errorMsg.DELETES);
   }
