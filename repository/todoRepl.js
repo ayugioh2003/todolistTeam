@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 // 解決找不到環境變數  先找出目前檔案的位置
 const currentPath = process.cwd();
 // 讓套件找到自定義的環境變數
-dotenv.config({ path: currentPath + '/config.env' });
+dotenv.config({ path: currentPath + '/config.backup.env' });
 const DBString = process.env.DATABASE.replace(
   '<password>',
   process.env.DATABASE_PASSWORD
@@ -53,5 +53,12 @@ export async function deleteOneDB(schemaModel, deleteId) {
   await DBConnect();
    await schemaModel.findByIdAndDelete(deleteId)
     .then(() => console.log("單筆刪除成功")); // catch 交給外層的 errorHandle 處理
+  return await schemaModel.find();
+}
+
+export async function deleteManyDB(schemaModel) {
+  await DBConnect();
+  await  schemaModel.deleteMany({})
+    .then(() => console.log("全部刪除成功"));
   return await schemaModel.find();
 }
