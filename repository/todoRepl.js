@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 // 解決找不到環境變數  先找出目前檔案的位置
 const currentPath = process.cwd();
 // 讓套件找到自定義的環境變數
-dotenv.config({ path: currentPath + '/config.backup.env' });
+dotenv.config({ path: currentPath + '/config.env' });
 const DBString = process.env.DATABASE.replace(
   '<password>',
   process.env.DATABASE_PASSWORD
@@ -34,7 +34,7 @@ export async function getDB(model) {
 export async function postDB(schemaModel, modelData) {
   await DBConnect();
   await schemaModel.create(modelData)
-    .then(() => console.log('寫入資料成功'));
+    .then(() => console.log('資料寫入成功'));
   return await schemaModel.find();
 }
 
