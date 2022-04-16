@@ -5,7 +5,6 @@ import {
   findMany,
   insertOne,
   updateOne,
-  deleteMany,
 } from '../model/todoModel.js';
 
 const bufferHandle = async (req) => {
@@ -50,9 +49,14 @@ export const postTodos = async (req, res) => {
 };
 
 // 呼叫model裡面的deleteMany函式刪除多筆資料
-export const deleteTodos = (res) => {
-  const result = deleteMany();
-  successHandle(res, result);
+export const deleteTodos = async (res) => {
+  try {
+    const reqData = []
+    const result = await modelOperator('DELETE_MANY',reqData);
+    successHandle(res, result);
+  } catch {
+    errorHandle(res, errorMsg.DELETES);
+  }
 };
 
 // 呼叫model裡面的updateOne函式更新單筆資料

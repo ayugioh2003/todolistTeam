@@ -55,3 +55,10 @@ export async function deleteOneDB(schemaModel, deleteId) {
     .then(() => console.log("單筆刪除成功")); // catch 交給外層的 errorHandle 處理
   return await schemaModel.find();
 }
+
+export async function deleteManyDB(schemaModel) {
+  await DBConnect();
+  await  schemaModel.deleteMany({})
+    .then(() => console.log("全部刪除成功"));
+  return await schemaModel.find();
+}
