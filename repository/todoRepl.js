@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 // 解決找不到環境變數  先找出目前檔案的位置
 const currentPath = process.cwd();
 // 讓套件找到自定義的環境變數
-dotenv.config({ path: currentPath + '/config.env' });
+dotenv.config({ path: currentPath + '/config.backup.env' });
 const DBString = process.env.DATABASE.replace(
   '<password>',
   process.env.DATABASE_PASSWORD
@@ -31,22 +31,11 @@ export async function getDB(model) {
   return result;
 }
 
-// 測試用新增 get功能確定沒問題就可以刪除
-// modelData 是根據schema定義出的 物件 資料格式
 export async function postDB(schemaModel, modelData) {
-  // 等待資料庫連線
   await DBConnect();
-  const newTodolist = new schemaModel(modelData);
-
-  return await newTodolist
-    .save()
-    .then(() => {
-      console.log('create success');
-    })
-    .catch((err) => {
-      console.log('資料寫入錯誤');
-      console.log(err);
-    });
+  await schemaModel.create(modelData)
+    .then(() => console.log('寫入資料成功'));
+  return await schemaModel.find();
 }
 
 export async function deleteOneDB(schemaModel, deleteId) {
