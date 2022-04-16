@@ -4,7 +4,7 @@ import {
   modelOperator,
   findMany,
   insertOne,
-  updateOne,
+  exists,
 } from '../model/todoModel.js';
 
 const bufferHandle = async (req) => {
@@ -59,21 +59,23 @@ export const deleteTodos = async (res) => {
   }
 };
 
-// 呼叫model裡面的updateOne函式更新單筆資料
+// 呼叫model裡面的 modelOperator 函式更新單筆資料
 export const patchTodos = async (req, res, updateID) => {
   try {
     const data = await bufferHandle(req);
     const { title, content } = data;
-    const updateIndex = findMany().findIndex((ele) => updateID == ele.id);
+    const isexists = await exists(updateID);
 
-    if ((title !== undefined || content !== undefined) && updateIndex !== -1) {
-      const updateResult = updateOne(data, updateIndex);
-      successHandle(res, updateResult);
+    if ((title || content) && isexists) {
+      data.id = updateID;
+      const result = await modelOperator('PATCH' , data);
+      successHandle(res, result);
     } else {
       errorHandle(res, errorMsg.PATCH);
     }
-  } catch {
+  } catch(error) {
     errorHandle(res, errorMsg.PATCH);
+    console.log(error);
   }
 };
 
