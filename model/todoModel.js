@@ -39,7 +39,7 @@ export async function modelOperator(methodType,reqData) {
   }
   // 測試用 可以新增 沒寫完整 等待刪除讓組員補齊
   else if(methodType === 'POST'){
-    await postDB(Todolist,modelData);
+    return await postDB(Todolist, modelData);
   }
   else if (methodType === 'DELETE_ONE') {
    return await deleteOneDB(Todolist, reqData);
