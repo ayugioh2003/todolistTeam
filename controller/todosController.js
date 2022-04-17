@@ -41,7 +41,7 @@ export const postTodos = async (req, res) => {
       errorHandle(res, errorMsg.POST);
       return;
     }
-    const insertResult = insertOne(data);
+    const insertResult = await modelOperator('POST', data);
     successHandle(res, insertResult);
   } catch {
     errorHandle(res, errorMsg.POST);
