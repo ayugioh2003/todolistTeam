@@ -62,3 +62,21 @@ export async function deleteManyDB(schemaModel) {
     .then(() => console.log("全部刪除成功"));
   return await schemaModel.find();
 }
+
+
+export async function patchDB(schemaModel, modelData, updateID) {
+  await DBConnect();
+  await schemaModel.findByIdAndUpdate(updateID, modelData)
+    .then(() => {
+      console.log(`update success`);
+    })
+    .catch((error) => { 
+      console.log(`patch錯誤`, error);
+    })
+  return await schemaModel.find();
+}
+
+export async function existsDB(schemaModel ,_id) {
+  await DBConnect();
+  return await schemaModel.findOne({_id});
+}
