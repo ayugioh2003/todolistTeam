@@ -1,0 +1,124 @@
+{
+	"info": {
+		"_postman_id": "7724968b-3669-4fe5-8433-86646cb5298f",
+		"name": "Vercel API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get todo list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "todolist-team.vercel.app/todos",
+					"host": [
+						"todolist-team",
+						"vercel",
+						"app"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post new todo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"test dataaaaa\",\r\n    \"content\": \"mock test bbbbb\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "todolist-team.vercel.app/todos",
+					"host": [
+						"todolist-team",
+						"vercel",
+						"app"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete all todos",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "todolist-team.vercel.app/todos",
+					"host": [
+						"todolist-team",
+						"vercel",
+						"app"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete one todo",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "todolist-team.vercel.app/todos/625c404a0e028ffb2ff73a01",
+					"host": [
+						"todolist-team",
+						"vercel",
+						"app"
+					],
+					"path": [
+						"todos",
+						"625c404a0e028ffb2ff73a01"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update todo",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"uuuuuuuu\",\r\n    \"content\": \"xxxxxxxxx\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "todolist-team.vercel.app/todos/625c40de0e028ffb2ff73a08",
+					"host": [
+						"todolist-team",
+						"vercel",
+						"app"
+					],
+					"path": [
+						"todos",
+						"625c40de0e028ffb2ff73a08"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
